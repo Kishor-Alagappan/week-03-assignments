@@ -1,25 +1,41 @@
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
-import time
+import csv
 
-print('Enter the product name below to fetch its different variants and prices: ')
-prod = input().split()
-search_query = '+'.join(prod)
-url = f'https://www.flipkart.com/search?q={search_query}'
-
+url = f'https://www.flipkart.com/search?q='
 try:
+    # Send an HTTP GET request to the URL
     response = requests.get(url)
-    time.sleep(2)
+    
+    # Check if the request was successful (status code 200)
     if response.status_code == 200:
+        # Parse the HTML content of the page using BeautifulSoup
         soup = BeautifulSoup(response.text, 'html.parser')
-        names = [element.text for element in soup.find_all('div', class_='_4rR01T')]
-        time.sleep(2)
-        prices = [element.text for element in soup.find_all('div', class_='_30jeq3 _1_WHN1')]
-        df = pd.DataFrame({'Product_name': names, 'Product_price': prices})
-        df.to_csv('products.csv', index=False)
-        print('Content successfully saved to .csv file')
+        
+        # Find all the product listings (div elements with class "product")
+        product_listings = soup.find_all('div', class_='product')
+        
+        # Create a CSV file to store the data
+        with open('ecommerce_data.csv', 'w', newline='') as csvfile:
+            # Define the CSV writer
+            csv_writer = csv.writer(csvfile)
+            
+            # Write header row
+            csv_writer.writerow(['Product Name', 'Price'])
+            
+            # Extract product names and prices from the product listings and write to CSV
+            for product in product_listings:
+                name = product.find('h2', class_='product-name').text
+                price = product.find('span', class_='product-price').text
+                
+                # Write product data to the CSV file
+                csv_writer.writerow([name, price])
+                
+        print("Data has been scraped and saved as 'ecommerce_data.csv'.")
     else:
-        print(f'Unknown response code {response.status_code} for URL: {url}')
+        print("Failed to retrieve the webpage. Status code:", response.status_code)
+
+except requests.exceptions.RequestException as e:
+    print("Error:", e)
 except Exception as e:
-    print(f'An error occurred: {e}')
+    print("An error occurred:", e)
