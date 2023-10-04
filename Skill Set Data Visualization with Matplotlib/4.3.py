@@ -6,6 +6,7 @@ data = {
     'Marks': [85, 92, 78, 65, 55]
 }
 
+
 df = pd.DataFrame(data)
 
 # Histogram

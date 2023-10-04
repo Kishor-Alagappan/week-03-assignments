@@ -36,6 +36,7 @@ axs[2].legend()
 
 plt.tight_layout()
 
+
 plt.show()
 
 

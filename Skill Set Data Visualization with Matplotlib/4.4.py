@@ -39,5 +39,4 @@ plt.title('Distribution of Grades')
 # Save the pie chart as a PNG image
 plt.savefig('piechart.png')
 
-# Display the plots (optional)
 plt.show()
