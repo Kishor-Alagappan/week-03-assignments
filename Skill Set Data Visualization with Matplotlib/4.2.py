@@ -10,6 +10,32 @@ data = {
 
 df = pd.DataFrame(data)
 
+fig, axs = plt.subplots(1, 3, figsize=(15, 5))
+x_label = 'Month'
 
+# Line Plot for Sales
+axs[0].plot(df['Month'], df['Sales'], 'bo-', label='Sales')
+axs[0].set_title('Monthly Sales')
+axs[0].set_xlabel(x_label)
+axs[0].set_ylabel('Sales')
+axs[0].legend()
+
+# Scatter Plot for Profit
+axs[1].scatter(df['Month'], df['Profit'], marker='x', color='r', label='Profit')
+axs[1].set_title('Monthly Profit')
+axs[1].set_xlabel(x_label)
+axs[1].set_ylabel('Profit')
+axs[1].legend()
+
+# Bar Plot for Number of Products Sold
+axs[2].bar(df['Month'], df['Products_Sold'], color='g', label='Products Sold')
+axs[2].set_title('Number of Products Sold')
+axs[2].set_xlabel(x_label)
+axs[2].set_ylabel('Products Sold')
+axs[2].legend()
+
+plt.tight_layout()
+
+plt.show()
 
 
